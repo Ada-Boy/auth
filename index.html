@@ -30,7 +30,8 @@
 		window.onload = function () {
 			// These must match the values in your main script
 			const CLIENT_ID = "491773885869-oan86t7eopdk11lpqo0keduodg4tv3kk.apps.googleusercontent.com";
-			const SCOPE = "https://www.googleapis.com/auth/drive.appdata";
+			// **FIX:** Add the userinfo.email scope, separated by a space.
+			const SCOPE = "https://www.googleapis.com/auth/drive.appdata https://www.googleapis.com/auth/userinfo.email";
 
 			const tokenClient = google.accounts.oauth2.initTokenClient({
 				client_id: CLIENT_ID,
