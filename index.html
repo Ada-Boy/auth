@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>Authorize Article Extractor</title>
+	<script src="https://accounts.google.com/gsi/client" async defer></script>
+	<style>
+		body {
+			font-family: sans-serif;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			height: 100vh;
+			margin: 0;
+		}
+
+		.container {
+			text-align: center;
+		}
+	</style>
+</head>
+
+<body>
+	<div class="container">
+		<h1>Connecting to Google Drive...</h1>
+		<p>Please complete the sign-in process in the Google pop-up window.</p>
+		<p>This window will close automatically.</p>
+	</div>
+	<script>
+		window.onload = function () {
+			// These must match the values in your main script
+			const CLIENT_ID = "491773885869-oan86t7eopdk11lpqo0keduodg4tv3kk.apps.googleusercontent.com";
+			const SCOPE = "https://www.googleapis.com/auth/drive.appdata";
+
+			const tokenClient = google.accounts.oauth2.initTokenClient({
+				client_id: CLIENT_ID,
+				scope: SCOPE,
+				callback: (tokenResponse) => {
+					// Check if the opener window still exists
+					if (window.opener) {
+						// Send the entire token response (success or error) back to the opener.
+						// Using a targetOrigin of '*' is necessary for a bookmarklet that can run on any site.
+						// The security is maintained because only the window that called `window.open()`
+						// has the `window.opener` reference.
+						window.opener.postMessage(tokenResponse, '*');
+						window.close();
+					}
+				}
+			});
+
+			// Immediately request the token, which will trigger the Google Sign-In popup
+			tokenClient.requestAccessToken({ prompt: '' });
+		};
+	</script>
+</body>
+
+</html>
